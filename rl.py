@@ -9,10 +9,7 @@
 import random, numpy, math
 
 #
-from keras.models import Sequential
-from keras.layers import *
-from keras.optimizers import *
-
+import tensorflow as tf
 
 #
 # %% ==========================================================================
@@ -25,22 +22,22 @@ class Brain:
         self.model = self._createModel()
 
     def _createModel(self):
-        model = Sequential()
+        model = tf.keras.models.Sequential()
 
         # Simple Model with Two Hidden Layers and a Linear Output Layer. The Input layer is simply the State input.
-        model.add(Dense(units=64, activation="relu", input_dim=self.NbrStates))
-        model.add(Dense(units=32, activation="relu"))
+        model.add(tf.keras.layers.Dense(units=64, activation="relu", input_dim=self.NbrStates))
+        model.add(tf.keras.layers.Dense(units=32, activation="relu"))
         model.add(
-            Dense(units=self.NbrActions, activation="linear")
+            tf.keras.layers.Dense(units=self.NbrActions, activation="linear")
         )  # Linear Output Layer as we are estimating a Function Q[S,A]
 
         model.compile(
-            loss="mse", optimizer=Adam(learning_rate=0.00001)
+            loss="mse", optimizer=tf.keras.optimizers.Adam(learning_rate=0.00001)
         )  # use adam as an alternative optimsiuer as per comment
 
         return model
 
-    def train(self, x, y, epoch=1, verbose=0):
+    def train(self, x, y, epoch=3, verbose=0):
         self.model.fit(x, y, batch_size=64, epochs=epoch, verbose=verbose)
 
     def predict(self, s):

@@ -2,7 +2,7 @@ from pong import Pong, screen
 import numpy as np
 from rl import Agent
 import matplotlib.pyplot as plt
-import keras
+import tensorflow as tf
 
 ACTIONS = 3
 STATE_COUNT = 6
@@ -35,7 +35,7 @@ def PlayExperiment(starting_model=0):
 
     # Load existing model
     if starting_model > 0:
-        model = keras.models.load_model(f"models/{starting_model}.keras")
+        model = tf.keras.models.load_model(f"models/{starting_model}.keras")
         TheAgent.setModel(model)
 
     # Initialise NextAction  Assume Action is scalar:  0:stay, 1:Up, 2:Down
@@ -50,7 +50,8 @@ def PlayExperiment(starting_model=0):
         for gtime in range(TOTAL_GAMETIME):
             GameEnd = False
             
-            for _ in range(500):
+            GameTicks = 0
+            for i in range(5000):
                 # Determine Next Action From the Agent
                 BestAction = TheAgent.Act(GameState)
 
@@ -60,7 +61,10 @@ def PlayExperiment(starting_model=0):
                 GameState = CaptureNormalizedState(BallX, BallY, BallSpeedX, BallSpeedY, PlayerCenterY, OpponentCenterY)
 
                 if GameEnd:
+                    GameTicks = i
                     break
+            else:
+                GameTicks = i
             
             TheGame = Pong()
             
@@ -86,10 +90,12 @@ def PlayExperiment(starting_model=0):
             print(
                 "Game Time: ",
                 GameTime,
-                "  Game Score: ",
+                "   Game Score: ",
                 "{0:.4f}".format(ReturnScore),
                 "   EPSILON: ",
                 "{0:.4f}".format(TheAgent.epsilon),
+                "   Ticks: ",
+                "{0}".format(GameTicks),
             )
 
             if GameTime % 50 == 0:
@@ -111,7 +117,7 @@ def PlayExperiment(starting_model=0):
 
 def main():
     # Main Method Just Play our Experiment
-    PlayExperiment(8219)
+    PlayExperiment(24085)
 
     # =======================================================================
 

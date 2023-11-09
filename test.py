@@ -1,4 +1,4 @@
-import keras
+import tensorflow as tf
 import numpy as np
 from pong import Pong, screen
 from rl import Agent
@@ -20,7 +20,7 @@ def CaptureNormalizedState(
     return gstate
 
 
-model = keras.models.load_model("models/9000.keras")
+model = tf.keras.models.load_model("models/24085.keras")
 
 # Create our PongGame instance
 TheGame = Pong(True)
