@@ -20,7 +20,7 @@ def CaptureNormalizedState(
     return gstate
 
 
-model = tf.keras.models.load_model("models/24085.keras")
+model = tf.keras.models.load_model("models/36000.keras")
 
 # Create our PongGame instance
 TheGame = Pong(True)

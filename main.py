@@ -3,6 +3,7 @@ import numpy as np
 from rl import Agent
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import psutil
 
 ACTIONS = 3
 STATE_COUNT = 6
@@ -98,6 +99,14 @@ def PlayExperiment(starting_model=0):
                 "{0}".format(GameTicks),
             )
 
+            process = psutil.Process()
+
+            print(
+                "Memory Usage: ",
+                "{0}".format(process.memory_info().rss / 1024 ** 2),
+                " MiB"
+            )
+
             if GameTime % 50 == 0:
                 GameHistory.append((GameTime, ReturnScore, TheAgent.epsilon))
     except KeyboardInterrupt:
@@ -117,7 +126,7 @@ def PlayExperiment(starting_model=0):
 
 def main():
     # Main Method Just Play our Experiment
-    PlayExperiment(24085)
+    PlayExperiment(32009)
 
     # =======================================================================
 

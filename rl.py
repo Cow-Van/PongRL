@@ -115,6 +115,7 @@ class Agent:
     # ============================================
     # Perform an Agent Training Cycle Update by processing a set of sampels from the Experience Replay memory
     def Process(self):
+        tf.keras.backend.clear_session()
         batch = self.ExpReplay.sample(BATCH_SIZE)
         batchLen = len(batch)
 
